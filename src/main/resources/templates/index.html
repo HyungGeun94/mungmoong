@@ -8,6 +8,15 @@
     <title>Document</title>
 </head>
 <body>
-    인덱스입니다.
+
+<div>
+    <span th:if="${#authorization.expression('isAuthenticated()')}">로그인됨</span>
+    <span th:if="${#authorization.expression('isAnonymous()')}">로그인되지 않음</span>
+</div>
+
+    <div>
+        <span>사용자: <strong th:text="${#authentication.name}"></strong></span> <br>
+        <span>권한: <strong th:text="${#authentication.authorities}"></strong></span>
+    </div>
 </body>
 </html>

@@ -30,7 +30,7 @@ public class SecurityConfig {
 
                  http
                 .authorizeHttpRequests((auth -> auth
-                        .requestMatchers("/login", "/signup", "/user", "/").permitAll()  // 변경
+                        .requestMatchers("/login", "/signup", "/user", "/","/articles/**").permitAll()  // 변경
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()));
 

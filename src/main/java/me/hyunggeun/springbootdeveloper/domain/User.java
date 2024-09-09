@@ -2,14 +2,12 @@ package me.hyunggeun.springbootdeveloper.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,11 +16,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class User{
+public class User extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @Column(name = "user_id", updatable = false)
     private Long id;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -32,6 +30,10 @@ public class User{
 
     @Enumerated(EnumType.STRING)
     private RoleType role;
+
+
+    @OneToMany(mappedBy = "user")
+    private List<Article> articles = new ArrayList<>();
 
     @Builder
     public User(String email, String password, RoleType role) {
