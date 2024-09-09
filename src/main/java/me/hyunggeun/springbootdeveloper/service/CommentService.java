@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,11 +33,28 @@ public class CommentService {
 
         Article article = blogRepository.findById(commentRequest.getArticleId()).orElseThrow(() -> new IllegalArgumentException("없는 글입니다"));
 
-        Comment comment = Comment.builder()
-                .content(commentRequest.getContent())
-                .user(user)
-                .article(article)
-                .build();
+        Comment comment = commentRepository.findById(commentRequest.getParentId()).orElseGet(()->null);
+
+
+
+
+
+        if(commentRequest.getParentId()==0) {
+             comment = Comment.builder()
+                    .content(commentRequest.getContent())
+                    .user(user)
+                    .article(article)
+                    .parent(null)
+                    .build();
+        }else{
+            comment = Comment.builder()
+                    .content(commentRequest.getContent())
+                    .user(user)
+                    .article(article)
+                    .parent(comment)
+                    .build();
+
+        }
 
 
         return commentRepository.save(comment).getId();
@@ -47,7 +65,7 @@ public class CommentService {
 
 
         Article article = blogRepository.findById(articleId).orElseThrow(() -> new IllegalArgumentException("없습니다."));
-        return commentRepository.findByArticleOrderByIdDesc(article);
+        return commentRepository.findByArticleAndParentIsNullOrderByIdAsc(article);
 
     }
 

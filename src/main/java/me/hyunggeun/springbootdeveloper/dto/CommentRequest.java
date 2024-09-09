@@ -10,5 +10,6 @@ import lombok.Setter;
 public class CommentRequest {
     private String content;
     private Long articleId;
+    private Long parentId;
 
 }

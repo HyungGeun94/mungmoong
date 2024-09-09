@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import me.hyunggeun.springbootdeveloper.domain.Article;
 import me.hyunggeun.springbootdeveloper.dto.ArticleResponse;
 import me.hyunggeun.springbootdeveloper.dto.CommentResponse;
+import me.hyunggeun.springbootdeveloper.dto.ReplyResponse;
 import me.hyunggeun.springbootdeveloper.service.BlogService;
 import me.hyunggeun.springbootdeveloper.service.CommentService;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,8 @@ public class BlogViewController {
         model.addAttribute("article",new ArticleResponse(article.getId(), article.getTitle(), article.getContent(), article.getCreatedAt()));
 
 
-        List<CommentResponse> list = commentService.findByArticleId(id).stream().map(c -> new CommentResponse(c.getUser().getEmail(), c.getContent(), c.getCreatedAt(), c.getUpdatedAt())).toList();
+        List<CommentResponse> list = commentService.findByArticleId(id).stream().map(c -> new CommentResponse(c.getId(), c.getUser().getEmail(), c.getContent(), c.getCreatedAt(), c.getUpdatedAt(), c.getReplies().stream()
+                .map((r) -> new ReplyResponse(r.getId(), r.getUser().getEmail(), r.getContent(), r.getCreatedAt(), r.getUpdatedAt())).toList())).toList();
 
 
         model.addAttribute("comments", list);
