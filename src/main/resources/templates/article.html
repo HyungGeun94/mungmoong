@@ -37,6 +37,39 @@
             </article>
         </div>
     </div>
+
+    <!-- 댓글 작성 폼 -->
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <h5>댓글 작성</h5>
+            <form th:action="@{/comments}" method="post">
+                <input type="hidden" name="articleId" th:value="${article.id}">
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea class="form-control" id="content" name="content" rows="3" placeholder="댓글을 입력하세요"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">댓글 등록</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 댓글 리스트 출력 -->
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <h5>댓글 목록</h5>
+            <div th:if="${#lists.isEmpty(comments)}">
+                <p>댓글이 없습니다. 첫 번째 댓글을 작성해 보세요!</p>
+            </div>
+            <ul class="list-group" th:each="comment : ${comments}">
+                <li class="list-group-item">
+                    <strong th:text="${comment.userEmail}"></strong>
+                    <span class="text-muted" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                    <p th:text="${comment.content}"></p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 
 <script src="/js/article.js"></script>
