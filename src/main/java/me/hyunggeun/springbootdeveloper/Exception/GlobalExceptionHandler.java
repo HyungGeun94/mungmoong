@@ -14,4 +14,10 @@ public class GlobalExceptionHandler {
         return "redirect:/signup";  // 회원가입 페이지로 리다이렉트
     }
 
+    @ExceptionHandler(Exception.class)
+    public String ExceptionHandler(Exception ex){
+
+        return "errorPage";
+    }
+
 }

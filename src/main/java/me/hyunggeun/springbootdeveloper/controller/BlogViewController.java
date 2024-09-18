@@ -26,11 +26,14 @@ public class BlogViewController {
     private final CommentService commentService;
 
 
+    // 모든 글 목록을 표시하는 핸들러
     @GetMapping("/articles")
-    public String articles(Model model) {
-
-
-        List<ArticleResponse> articles = blogService.findAll().stream().map(a -> new ArticleResponse(a.getId(), a.getTitle(), a.getContent(),a.getCreatedAt())).toList();
+    public String articles(@RequestParam(required = false) String title,
+                           @RequestParam(required = false) String content, Model model) {
+        // title과 content가 전달되면 그에 맞게 검색, 아니면 전체 조회
+        List<ArticleResponse> articles = blogService.findByTitleAndContent(title, content).stream()
+                .map(a -> new ArticleResponse(a.getId(), a.getTitle(), a.getContent(), a.getCreatedAt()))
+                .toList();
 
         model.addAttribute("articles", articles);
 

@@ -45,6 +45,11 @@ public class BlogService {
         return blogRepository.findAll();
     }
 
+    public List<Article> findByTitleAndContent(String title, String content) {
+        return blogRepository.findByTitleAndContent(title, content);
+    }
+
+
     public Article findById(Long id) {
         return blogRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("not found" +id)
