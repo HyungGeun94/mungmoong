@@ -20,8 +20,9 @@
 
     <!-- 검색 폼 -->
     <form method="get" action="/articles" class="mb-3">
-        <input type="text" name="title" class="form-control" placeholder="제목 검색">
-        <input type="text" name="content" class="form-control mt-2" placeholder="내용 검색">
+        <input type="text" id= "keyword" name="keyword" class="form-control"
+               th:value="${keyword != null} ? ${keyword} : ''"
+               th:placeholder="${keyword != null} ? '' : '검색하기'">
         <button type="submit" class="btn btn-primary mt-2">검색</button>
     </form>
 
@@ -30,8 +31,11 @@
             th:onclick="|location.href='@{/new-article}'|"
             class="btn btn-secondary btn-sm mb-3">글 등록</button>
 
+    <button type="button" class="btn btn-secondary" onclick="location.href='/logout'">로그아웃</button>
 
-    <div class="row-6" th:each="item : ${articles}">
+
+
+    <div class="row-6" th:each="item : ${articles.getContent()}">
         <div class="card">
             <div class="card-header" th:text="${item.id}">
             </div>
@@ -46,7 +50,33 @@
         <br>
     </div>
 
-    <button type="button" class="btn btn-secondary" onclick="location.href='/logout'">로그아웃</button>
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            <!-- Previous button -->
+            <li class="page-item" th:classappend="${articles.hasPrevious()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/articles(page=${articles.number - 1}, keyword=${keyword})}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- Page numbers -->
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                <a class="page-link" th:href="@{/articles(page=${i}, keyword=${keyword})}" th:text="${i + 1}">1</a>
+            </li>
+
+            <!-- Next button -->
+            <li class="page-item" th:classappend="${articles.hasNext()} ? '' : 'disabled'">
+                <a class="page-link" th:href="@{/articles(page=${articles.number + 1}, keyword=${keyword})}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
 
 
 

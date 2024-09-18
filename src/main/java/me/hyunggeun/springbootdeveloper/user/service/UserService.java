@@ -30,7 +30,7 @@ public class UserService {
         return userRepository.save(User.builder()
                 .email(dto.getEmail())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
-                .role(RoleType.ADMIN)
+                .role(RoleType.USER)
                 .build()).getId();
     }
 

@@ -7,6 +7,8 @@ import me.hyunggeun.springbootdeveloper.article.repository.ArticleRepository;
 import me.hyunggeun.springbootdeveloper.security.CustomUserDetails;
 import me.hyunggeun.springbootdeveloper.user.entity.User;
 import me.hyunggeun.springbootdeveloper.user.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +20,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ArticleService {
 
-    private final ArticleRepository blogRepository;
+    private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
 
 
@@ -39,27 +41,27 @@ public class ArticleService {
                 .user(user)  // 영속성 컨텍스트에 있는 user 사용
                 .build();
 
-        return blogRepository.save(article);
+        return articleRepository.save(article);
     }
 
     public List<Article> findAll() {
-        return blogRepository.findAll();
+        return articleRepository.findAll();
     }
 
-    public List<Article> findByTitleAndContent(String title, String content) {
-        return blogRepository.findByTitleAndContent(title, content);
+    public Page<Article> findByKeyword(String keyword, Pageable pageable) {
+        return articleRepository.findByKeyword(keyword, pageable);
     }
 
 
     public Article findById(Long id) {
-        return blogRepository.findById(id).orElseThrow(
+        return articleRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("not found" +id)
         );
     }
 
 
     public void delete(Long id) {
-        blogRepository.deleteById(id);
+        articleRepository.deleteById(id);
     }
 
 

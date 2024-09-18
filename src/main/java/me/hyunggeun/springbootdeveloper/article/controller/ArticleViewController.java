@@ -8,6 +8,9 @@ import me.hyunggeun.springbootdeveloper.article.service.ArticleService;
 import me.hyunggeun.springbootdeveloper.comment.dto.CommentResponse;
 import me.hyunggeun.springbootdeveloper.comment.dto.ReCommentResponse;
 import me.hyunggeun.springbootdeveloper.comment.service.CommentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,14 +30,22 @@ public class ArticleViewController {
 
     // 모든 글 목록을 표시하는 핸들러
     @GetMapping("/articles")
-    public String articles(@RequestParam(required = false) String title,
-                           @RequestParam(required = false) String content, Model model) {
-        // title과 content가 전달되면 그에 맞게 검색, 아니면 전체 조회
-        List<ArticleResponse> articles = blogService.findByTitleAndContent(title, content).stream()
-                .map(a -> new ArticleResponse(a.getId(), a.getTitle(), a.getContent(), a.getCreatedAt()))
-                .toList();
+    public String articles(@RequestParam(required = false) String keyword,
+                           Model model,
+                           @PageableDefault(page=0,size=5)Pageable pageable) {
+        // keyword가 전달되면 그에 맞게 검색, 아니면 전체 조회
+//        Page<ArticleResponse> articles = blogService.findByKeyword(keyword, pageable).stream()
+//                .map(a -> new ArticleResponse(a.getId(), a.getTitle(), a.getContent(), a.getCreatedAt()))
+//                .toList();
+
+        Page<ArticleResponse> articles = blogService.findByKeyword(keyword, pageable)
+                .map(a -> new ArticleResponse(a.getId(), a.getTitle(), a.getContent(), a.getCreatedAt()));
+
 
         model.addAttribute("articles", articles);
+        model.addAttribute("currentPage", articles.getNumber());
+        model.addAttribute("totalPages", articles.getTotalPages());
+        model.addAttribute("keyword", keyword);
 
         return "articleList";
     }
