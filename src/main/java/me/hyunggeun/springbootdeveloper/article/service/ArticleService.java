@@ -9,10 +9,12 @@ import me.hyunggeun.springbootdeveloper.user.entity.User;
 import me.hyunggeun.springbootdeveloper.user.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -67,7 +69,17 @@ public class ArticleService {
 
     @Transactional
     public Article update(Long id, AddArticleRequest request) {
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         Article article = findById(id);
+
+        if(!customUserDetails.getUsername().equals(article.getUser().getEmail())) {
+
+            throw new IllegalArgumentException("User not authorized");
+
+        }
+
 
         article.update(request.getTitle(),request.getContent());
 

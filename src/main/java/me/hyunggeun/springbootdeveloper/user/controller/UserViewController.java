@@ -20,10 +20,7 @@ public class UserViewController {
         return "signup";
     }
 
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
+
 
     @GetMapping("/admin")
     public String admin() {

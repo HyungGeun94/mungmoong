@@ -21,8 +21,10 @@
     <!-- 검색 폼 -->
     <form method="get" action="/articles" class="mb-3">
         <input type="text" id= "keyword" name="keyword" class="form-control"
+
                th:value="${keyword != null} ? ${keyword} : ''"
                th:placeholder="${keyword != null} ? '' : '검색하기'">
+
         <button type="submit" class="btn btn-primary mt-2">검색</button>
     </form>
 
@@ -31,14 +33,19 @@
             th:onclick="|location.href='@{/new-article}'|"
             class="btn btn-secondary btn-sm mb-3">글 등록</button>
 
+    <th th:if="${#authentication.name != 'anonymousUser'}" >
+
     <button type="button" class="btn btn-secondary" onclick="location.href='/logout'">로그아웃</button>
 
+    </th>
 
 
     <div class="row-6" th:each="item : ${articles.getContent()}">
         <div class="card">
-            <div class="card-header" th:text="${item.id}">
+            <div class="card-header" th:text="${item.id}" >
+
             </div>
+            <div class="card" th:text="${item.writer}"> </div>
             <div class="card-body">
                 <h5 class="card-title" th:text="${item.title}"></h5>
                 <p class="card-text" th:text="${item.content}"></p>
@@ -88,3 +95,5 @@
 
 
 </body>
+
+</html>
