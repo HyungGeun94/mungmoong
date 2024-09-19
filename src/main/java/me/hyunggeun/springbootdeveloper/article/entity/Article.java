@@ -6,7 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.hyunggeun.springbootdeveloper.common.BaseTimeEntity;
+import me.hyunggeun.springbootdeveloper.likedislike.entity.LikeDislike;
 import me.hyunggeun.springbootdeveloper.user.entity.User;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -28,6 +32,9 @@ public class Article extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "article")
+    Set<LikeDislike> likeDislikes = new HashSet<>();
 
 
     @Builder

@@ -38,6 +38,16 @@
         </div>
     </div>
 
+    <!-- 좋아요/싫어요 버튼 -->
+    <div class="like-dislike-section">
+        <button type="button" class="btn btn-outline-primary btn-sm" id="like-btn" onclick="toggleLikeDislike('like')">
+            👍 좋아요 (<span id="like-count" th:text="${article.likeCount}">0</span>)
+        </button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="dislike-btn" onclick="toggleLikeDislike('dislike')">
+            👎 싫어요 (<span id="dislike-count" th:text="${article.dislikeCount}">0</span>)
+        </button>
+    </div>
+
     <!-- 댓글 작성 폼 -->
     <div class="row mt-4">
         <div class="col-lg-8">
@@ -105,6 +115,55 @@
             form.style.display = 'block';
         } else {
             form.style.display = 'none';
+        }
+    }
+
+    function toggleLikeDislike(action) {
+        const articleId = document.getElementById('article-id').value;
+        const url = action === 'like' ? `/article/${articleId}/like` : `/article/${articleId}/dislike`;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('좋아요/싫어요 처리 중 오류가 발생했습니다.');
+            }
+        }).then(data => {
+            // 좋아요/싫어요 수 업데이트
+            document.getElementById('like-count').textContent = data.likeCount;
+            document.getElementById('dislike-count').textContent = data.dislikeCount;
+
+            // 버튼 스타일 업데이트
+            updateButtonStyles(data.userAction);
+        }).catch(error => {
+            alert(error.message);
+        });
+    }
+
+    function updateButtonStyles(userAction) {
+        const likeBtn = document.getElementById('like-btn');
+        const dislikeBtn = document.getElementById('dislike-btn');
+
+        if (userAction === 'like') {
+            likeBtn.classList.add('btn-primary');
+            likeBtn.classList.remove('btn-outline-primary');
+            dislikeBtn.classList.add('btn-outline-secondary');
+            dislikeBtn.classList.remove('btn-secondary');
+        } else if (userAction === 'dislike') {
+            likeBtn.classList.add('btn-outline-primary');
+            likeBtn.classList.remove('btn-primary');
+            dislikeBtn.classList.add('btn-secondary');
+            dislikeBtn.classList.remove('btn-outline-secondary');
+        } else {
+            likeBtn.classList.add('btn-outline-primary');
+            likeBtn.classList.remove('btn-primary');
+            dislikeBtn.classList.add('btn-outline-secondary');
+            dislikeBtn.classList.remove('btn-secondary');
         }
     }
 </script>

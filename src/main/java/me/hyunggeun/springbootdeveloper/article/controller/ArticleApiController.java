@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class ArticleApiController {
 
     @GetMapping("/api/articles")
     public ResponseEntity<List<ArticleResponse>> getAllArticles() {
-        List<ArticleResponse> articles = blogService.findAll().stream().map(a -> new ArticleResponse(a.getId(),a.getTitle(), a.getContent(),a.getCreatedAt())).toList();
+        List<ArticleResponse> articles = blogService.findAll().stream().map(a -> new ArticleResponse(a.getId(),a.getTitle(), a.getContent(),a.getCreatedAt(),a.getUser().getEmail(),0,0)).toList();
 
 
         return ResponseEntity.status(HttpStatus.OK).body(articles);
@@ -37,7 +38,7 @@ public class ArticleApiController {
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable Long id) {
         Article article = blogService.findById(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ArticleResponse(article.getId(), article.getTitle(), article.getContent(),article.getCreatedAt()));
+        return ResponseEntity.status(HttpStatus.OK).body(new ArticleResponse(article.getId(), article.getTitle(), article.getContent(),article.getCreatedAt(),article.getUser().getEmail(),0,0));
     }
 
     @DeleteMapping("/api/articles/{id}")
@@ -49,7 +50,10 @@ public class ArticleApiController {
 
     @PutMapping("/api/articles/{id}")
     public ResponseEntity<Article> updatedArticle(@PathVariable long id,
-                                                  @RequestBody AddArticleRequest request) {
+                                                  @RequestBody AddArticleRequest request
+    ) {
+
+
         Article updatedArticle = blogService.update(id, request);
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedArticle);

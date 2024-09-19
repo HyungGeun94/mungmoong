@@ -16,6 +16,9 @@ public class ArticleResponse {
     private String title;
     private String content;
     private LocalDateTime createdAt;
+    private String writer;
+    private int likeCount;
+    private int dislikeCount;
 
 
 }

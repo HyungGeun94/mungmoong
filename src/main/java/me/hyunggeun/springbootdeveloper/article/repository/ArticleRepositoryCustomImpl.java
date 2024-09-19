@@ -1,6 +1,7 @@
 package me.hyunggeun.springbootdeveloper.article.repository;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

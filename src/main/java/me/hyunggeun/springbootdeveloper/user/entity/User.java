@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import me.hyunggeun.springbootdeveloper.article.entity.Article;
 import me.hyunggeun.springbootdeveloper.common.BaseTimeEntity;
+import me.hyunggeun.springbootdeveloper.likedislike.entity.LikeDislike;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Table(name = "users")
@@ -32,6 +35,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Article> articles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<LikeDislike> likeDislikes = new HashSet<>();
 
     @Builder
     public User(String email, String password, RoleType role) {
