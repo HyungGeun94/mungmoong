@@ -1,11 +1,14 @@
 package me.hyunggeun.springbootdeveloper.likedislike.service;
 
 import lombok.RequiredArgsConstructor;
+import me.hyunggeun.springbootdeveloper.article.entity.Article;
 import me.hyunggeun.springbootdeveloper.article.repository.ArticleRepository;
+import me.hyunggeun.springbootdeveloper.likedislike.dto.LikeDislikeResponseDTO;
 import me.hyunggeun.springbootdeveloper.likedislike.entity.LikeDislike;
 import me.hyunggeun.springbootdeveloper.likedislike.repository.LikeDislikeRepository;
 import me.hyunggeun.springbootdeveloper.user.entity.User;
 import me.hyunggeun.springbootdeveloper.user.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +36,10 @@ public class LikeDislikeService {
 
 
 
-    public void likeArticle(String email, Long articleId) {
+    public LikeDislikeResponseDTO likeArticle(Long articleId) {
+
+        // SecurityContextHolder에서 현재 사용자 정보 가져오기
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // username으로 User 조회
         User user = userRepository.findByEmail(email)
@@ -52,17 +58,30 @@ public class LikeDislikeService {
 
                 existingLike.changeLikeStatus(true); // dirty checking 자동 적용
             }
-        } else {
-            LikeDislike newLike = LikeDislike.create(user, articleRepository.findById(articleId).get(), true);
-//            LikeDislike newLike = new LikeDislike();
-//            newLike.setUser(user);
-//            newLike.setPost(new Post(postId));
-//            newLike.setLikeStatus(true);
-            likeDislikeRepository.save(newLike);
         }
+        else {
+            Optional<Article> article = articleRepository.findById(articleId);
+            if (article.isPresent()) {
+                LikeDislike newLike = LikeDislike.create(user,article.get() ,true);
+                likeDislikeRepository.save(newLike);
+            }
+            else{
+                throw new IllegalArgumentException("Article not found");
+            }
+        }
+
+        // 좋아요 수 등 응답 데이터를 클라이언트로 보냄
+
+        LikeDislikeResponseDTO likeDislikeResponseDTO = new LikeDislikeResponseDTO("like",likeCount(articleId), dislikeCount(articleId) );
+
+
+        return likeDislikeResponseDTO;
     }
 
-    public void dislikeArticle(String email, Long articleId) {
+    public void dislikeArticle(Long articleId) {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
