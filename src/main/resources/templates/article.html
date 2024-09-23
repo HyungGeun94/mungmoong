@@ -7,7 +7,9 @@
 </head>
 <body>
 <div class="p-5 mb-5 text-center bg-light">
-    <h1 class="mb-3">My Blog</h1>
+    <h1 class="mb-3">
+        <a href="http://localhost:8080/" style="text-decoration: none; color: inherit;">My Blog</a>
+    </h1>
     <h4 class="mb-3">블로그에 오신 것을 환영합니다.</h4>
 
     <div>
@@ -27,7 +29,9 @@
                     <div class="text-muted fst-italic mb-2" th:text="|Posted on ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>
                 </header>
                 <section class="mb-5">
-                    <p class="fs-5 mb-4" th:text="${article.content}"></p>
+
+<!--                    <p class="fs-5 mb-4" th:text="${article.content}"></p>-->
+                    <p class="fs-5 mb-4" th:utext="${article.content}"></p>
                 </section>
                 <button type="button" id="modify-btn"
                         th:onclick="|location.href='@{/new-article?id={articleId}(articleId=${article.id})}'|"

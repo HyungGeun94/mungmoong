@@ -40,10 +40,32 @@ if (modifyButton) {
 }
 
 // 생성 기능
+let editorInstance;
+
+ClassicEditor
+    .create(document.querySelector('#content'), {
+        language: 'ko',
+        ckfinder : {
+
+            uploadUrl: '/image/upload',
+            withCredentials: true
+        }
+    })
+    .then(editor => {
+        editorInstance = editor;
+    })
+    .catch(error => {
+        console.error('Error initializing CKEditor:', error);
+    });
+
+// 생성 기능
 const createButton = document.getElementById('create-btn');
 
 if (createButton) {
     createButton.addEventListener('click', event => {
+        // CKEditor에서 content 값을 가져옴
+        const content = editorInstance.getData();
+
         fetch('/api/articles', {
             method: 'POST',
             headers: {
@@ -51,12 +73,15 @@ if (createButton) {
             },
             body: JSON.stringify({
                 title: document.getElementById('title').value,
-                content: document.getElementById('content').value
+                content: content // CKEditor에서 가져온 content 값
             })
         })
             .then(() => {
                 alert('등록 완료되었습니다.');
                 location.replace('/articles');
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
     });
 }

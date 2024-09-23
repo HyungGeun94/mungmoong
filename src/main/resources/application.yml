@@ -2,6 +2,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect  # 또는 적절한 MySQL 방언
     properties:
       hibernate:
         format_sql: true
