@@ -52,6 +52,11 @@ dependencies {
 //	s3의존성 추가
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+//	redis 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate6:2.17.2'
 
 	}
 

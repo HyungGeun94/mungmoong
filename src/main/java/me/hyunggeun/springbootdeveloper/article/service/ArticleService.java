@@ -2,11 +2,14 @@ package me.hyunggeun.springbootdeveloper.article.service;
 
 import lombok.RequiredArgsConstructor;
 import me.hyunggeun.springbootdeveloper.article.dto.AddArticleRequest;
+import me.hyunggeun.springbootdeveloper.article.dto.ArticleResponse;
+import me.hyunggeun.springbootdeveloper.article.dto.PageDTO;
 import me.hyunggeun.springbootdeveloper.article.entity.Article;
 import me.hyunggeun.springbootdeveloper.article.repository.ArticleRepository;
 import me.hyunggeun.springbootdeveloper.security.CustomUserDetails;
 import me.hyunggeun.springbootdeveloper.user.entity.User;
 import me.hyunggeun.springbootdeveloper.user.repository.UserRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -50,8 +53,25 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Page<Article> findByKeyword(String keyword, Pageable pageable) {
-        return articleRepository.findByKeyword(keyword, pageable);
+    @Cacheable(cacheNames = "getBoards", key = "'boards:page:' + #pageable.pageNumber + ':size:' + #pageable.pageSize", cacheManager = "boardCacheManager")
+    public PageDTO<ArticleResponse> findByKeyword(String keyword, Pageable pageable) {
+        Page<ArticleResponse> articlePage = articleRepository.findByKeyword(keyword, pageable)
+                .map(a -> new ArticleResponse(
+                        a.getId(),
+                        a.getTitle(),
+                        a.getContent(),
+                        a.getCreatedAt(),
+                        a.getUser().getEmail(),
+                        0, 0
+                ));
+
+        // Page 객체를 PageDTO로 변환하여 반환
+        return new PageDTO<>(
+                articlePage.getContent(),
+                articlePage.getNumber(),
+                articlePage.getSize(),
+                articlePage.getTotalElements()
+        );
     }
 
 

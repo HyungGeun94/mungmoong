@@ -2,6 +2,7 @@ package me.hyunggeun.springbootdeveloper.article.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import me.hyunggeun.springbootdeveloper.article.dto.PageDTO;
 import me.hyunggeun.springbootdeveloper.article.entity.Article;
 import me.hyunggeun.springbootdeveloper.article.dto.ArticleResponse;
 import me.hyunggeun.springbootdeveloper.article.repository.ArticleRepository;
@@ -12,6 +13,7 @@ import me.hyunggeun.springbootdeveloper.comment.service.CommentService;
 import me.hyunggeun.springbootdeveloper.likedislike.service.LikeDislikeService;
 import me.hyunggeun.springbootdeveloper.security.CustomUserDetails;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,8 +48,9 @@ public class ArticleViewController {
 //                .map(a -> new ArticleResponse(a.getId(), a.getTitle(), a.getContent(), a.getCreatedAt()))
 //                .toList();
 
-        Page<ArticleResponse> articles = articleService.findByKeyword(keyword, pageable)
-                .map(a -> new ArticleResponse(a.getId(), a.getTitle(), a.getContent(), a.getCreatedAt(),a.getUser().getEmail(),0,0));
+        PageDTO<ArticleResponse> pageDTO = articleService.findByKeyword(keyword, pageable);
+
+        Page<ArticleResponse> articles = new PageImpl<>(pageDTO.getContent(), pageable, pageDTO.getTotalElements());
 
 
         model.addAttribute("articles", articles);
