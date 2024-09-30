@@ -1,38 +1,16 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL8Dialect  # 또는 적절한 MySQL 방언
-    properties:
-      hibernate:
-        format_sql: true
-
-    defer-datasource-initialization: true
   profiles:
-    include: db
+    active: local
+    include: secret
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
+#    배포테스트 시 dev 활성화
+#    include: dev
 
-
-logging.level:
-  org.springframework.cache: trace # Redis 사용에 대한 로그가 조회되도록 설정
-  org.hibernate.SQL: debug
-  org.hibernate.orm.jdbc.bind: trace #스프링 부트 3.x, hibernate6
+#    실제 운영 시 prod 활성화
+#    include: prod
 
 
-## local 환경
-#spring:
-#  profiles:
-#    default: local
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/mydb
-#    username: root
-#    password: password
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
+
+
+
+

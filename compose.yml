@@ -1,0 +1,14 @@
+services:
+  db:
+    build: .
+    ports:
+      - "${MYSQL_PORT}:${MYSQL_PORT}"
+    volumes:
+      - "${MYSQL_LOCAL_DIRECTORY}"
+  redis:
+    image: redis
+    container_name: redis-cache
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - "${REDIS_LOCAL_DIRECTORY}"
