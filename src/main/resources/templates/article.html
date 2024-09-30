@@ -1,53 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>블로그 글</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+<head
+        th:replace="common/fragments :: head('블로그 글')">
 </head>
+
+
 <body>
-<div class="p-5 mb-5 text-center bg-light">
-    <h1 class="mb-3">
-        <a href="http://localhost:8080/" style="text-decoration: none; color: inherit;">My Blog</a>
-    </h1>
-    <h4 class="mb-3">블로그에 오신 것을 환영합니다.</h4>
 
-    <div>
-        <span>사용자: <strong th:text="${#authentication.name}"></strong></span> <br>
-        <span>권한: <strong th:text="${#authentication.authorities}"></strong></span>
-    </div>
+<div th:replace="common/fragments :: header"></div>
 
-</div>
 
 <div class="container mt-5">
+
     <div class="row">
         <div class="col-lg-8">
             <article>
                 <input type="hidden" id="article-id" th:value="${article.id}">
                 <header class="mb-4">
                     <h1 class="fw-bolder mb-1" th:text="${article.title}"></h1>
-                    <div class="text-muted fst-italic mb-2" th:text="|Posted on ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>
+                    <div class="text-muted fst-italic mb-2"
+                         th:text="|Posted on ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|"></div>
                 </header>
                 <section class="mb-5">
 
-<!--                    <p class="fs-5 mb-4" th:text="${article.content}"></p>-->
                     <p class="fs-5 mb-4" th:utext="${article.content}"></p>
                 </section>
+
                 <button type="button" id="modify-btn"
                         th:onclick="|location.href='@{/new-article?id={articleId}(articleId=${article.id})}'|"
-                        class="btn btn-primary btn-sm">수정</button>
+                        class="btn btn-primary btn-sm">수정
+                </button>
+
                 <button type="button" id="delete-btn"
-                        class="btn btn-secondary btn-sm">삭제</button>
+                        class="btn btn-secondary btn-sm">삭제
+                </button>
+
             </article>
         </div>
     </div>
 
     <!-- 좋아요/싫어요 버튼 -->
     <div class="like-dislike-section">
+
         <button type="button" class="btn btn-outline-primary btn-sm" id="like-btn" onclick="toggleLikeDislike('like')">
             👍 좋아요 (<span id="like-count" th:text="${article.likeCount}">0</span>)
         </button>
-        <button type="button" class="btn btn-outline-secondary btn-sm" id="dislike-btn" onclick="toggleLikeDislike('dislike')">
+
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="dislike-btn"
+                onclick="toggleLikeDislike('dislike')">
             👎 싫어요 (<span id="dislike-count" th:text="${article.dislikeCount}">0</span>)
         </button>
     </div>
@@ -59,10 +60,13 @@
             <form th:action="@{/comments}" method="post">
                 <input type="hidden" name="articleId" th:value="${article.id}">
                 <input type="hidden" name="parentId" value="0">
+
                 <div class="form-group">
                     <label for="content">내용</label>
-                    <textarea class="form-control" id="content" name="content" rows="3" placeholder="댓글을 입력하세요"></textarea>
+                    <textarea class="form-control" id="content" name="content" rows="3"
+                              placeholder="댓글을 입력하세요"></textarea>
                 </div>
+
                 <button type="submit" class="btn btn-primary mt-2">댓글 등록</button>
             </form>
         </div>
@@ -80,18 +84,22 @@
                 <li class="list-group-item" th:each="comment : ${comments}">
                     <!-- 댓글 정보 -->
                     <strong th:text="${comment.userEmail}"></strong>
-                    <span class="text-muted" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                    <span class="text-muted"
+                          th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
                     <p th:text="${comment.content}"></p>
 
                     <!-- 대댓글 토글 버튼 -->
-                    <button type="button" class="btn btn-sm btn-link" th:id="'reply-btn-' + ${comment.id}" onclick="toggleReplyForm(this)">대댓글 달기</button>
+                    <button type="button" class="btn btn-sm btn-link" th:id="'reply-btn-' + ${comment.id}"
+                            onclick="toggleReplyForm(this)">대댓글 달기
+                    </button>
 
                     <div th:id="'reply-form-' + ${comment.id}" style="display: none; margin-top: 10px;">
                         <form th:action="@{/comments}" method="post">
                             <input type="hidden" name="articleId" th:value="${article.id}">
                             <input type="hidden" name="parentId" th:value="${comment.id}">
                             <div class="form-group">
-                                <textarea class="form-control" name="content" rows="2" placeholder="대댓글을 입력하세요"></textarea>
+                                <textarea class="form-control" name="content" rows="2"
+                                          placeholder="대댓글을 입력하세요"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm">대댓글 등록</button>
                         </form>
@@ -100,7 +108,8 @@
                     <ul class="list-group list-group-flush mt-2">
                         <li class="list-group-item" th:each="reply : ${comment.replies}">
                             <strong th:text="${reply.userEmail}"></strong>
-                            <span class="text-muted" th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                            <span class="text-muted"
+                                  th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
                             <p th:text="${reply.content}"></p>
                         </li>
                     </ul>
@@ -108,10 +117,20 @@
             </ul>
         </div>
     </div>
+
 </div>
 
-<!-- JavaScript for 댓글 및 대댓글 폼 토글 -->
+
+<div th:replace="common/fragments :: footer"></div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+</script>
+
+
 <script>
+
     function toggleReplyForm(button) {
         const commentId = button.id.split('-')[2];
         const form = document.getElementById('reply-form-' + commentId);

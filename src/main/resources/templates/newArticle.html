@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>블로그 글</title>
-  <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-  <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/translations/ko.js"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+<head
+        th:replace="common/fragments :: head('블로그 글 ')">
+
 </head>
+
 <body>
-<div class="p-5 mb-5 text-center</> bg-light">
-  <h1 class="mb-3">
-    <a href="http://localhost:8080/" style="text-decoration: none; color: inherit;">My Blog</a>
-  </h1>
-  <h4 class="mb-3">블로그에 오신 것을 환영합니다.</h4>
-</div>
+
+<div th:replace="common/fragments :: header"></div>
+
 
 <div class="container mt-5">
   <div class="row">
@@ -40,8 +36,10 @@
   </div>
 </div>
 
+<div th:replace="common/fragments :: footer"></div>
 
-
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/translations/ko.js"></script>
 <script src="/js/article.js"></script>
 </body>
 </html>

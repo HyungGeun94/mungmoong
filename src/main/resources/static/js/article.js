@@ -22,6 +22,9 @@ if (modifyButton) {
         let params = new URLSearchParams(location.search);
         let id = params.get('id');
 
+        const content = editorInstance.getData();
+
+
         fetch(`/api/articles/${id}`, {
             method: 'PUT',
             headers: {
@@ -29,7 +32,7 @@ if (modifyButton) {
             },
             body: JSON.stringify({
                 title: document.getElementById('title').value,
-                content: document.getElementById('content').value
+                content: content // CKEditor에서 가져온 content 값
             })
         })
             .then(() => {
