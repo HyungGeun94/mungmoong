@@ -1,10 +1,10 @@
-package me.hyunggeun.springbootdeveloper.common;
+package me.hyunggeun.springbootdeveloper.common.image;
 
 
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import me.hyunggeun.springbootdeveloper.config.S3Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +24,7 @@ public class ImageService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+//    임시 저장할 디렉토리 위치 (절대경로로 안전하게 다 적기)
     private String localLocation = "/Users/cloud/Desktop/s3test/";
 
 

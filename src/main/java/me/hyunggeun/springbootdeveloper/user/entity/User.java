@@ -4,7 +4,7 @@ package me.hyunggeun.springbootdeveloper.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import me.hyunggeun.springbootdeveloper.article.entity.Article;
-import me.hyunggeun.springbootdeveloper.common.BaseTimeEntity;
+import me.hyunggeun.springbootdeveloper.common.entity.BaseTimeEntity;
 import me.hyunggeun.springbootdeveloper.likedislike.entity.LikeDislike;
 
 import java.util.ArrayList;

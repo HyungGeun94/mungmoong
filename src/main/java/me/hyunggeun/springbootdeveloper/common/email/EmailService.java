@@ -1,24 +1,25 @@
-package me.hyunggeun.springbootdeveloper.common;
+package me.hyunggeun.springbootdeveloper.common.email;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
-//    왜 인식이 제대로 안되는지 모르겠음 ( 일단 작동은 잘 되는데 ide 오류인가? )
+
+    // IntelliJ에서 JavaMailSender 빈을 찾지 못하는 경고가 있지만,
+    // 애플리케이션은 정상 작동하므로 무시해도 됨.
+    // 의존성은 spring-boot-starter-mail을 통해 자동 설정됨.
+
     private final JavaMailSender mailSender;
 
     private final StringRedisTemplate redisTemplate;
@@ -62,6 +63,9 @@ public class EmailService {
     }
 
 
+    /**
+     * 인증로직
+     */
     public String verifyCode(String email, String code)   {
 
         // Redis에서 이메일에 해당하는 인증번호 조회
@@ -80,8 +84,4 @@ public class EmailService {
             return "Invalid verification code.";
         }
     }
-
-
-
-
 }

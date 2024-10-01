@@ -15,15 +15,10 @@ public class UserViewController {
     }
 
     @GetMapping("/signup")
+
     public String signup(Model model) {
         model.addAttribute("addUserRequest",new AddUserRequest());
         return "signup";
     }
 
-
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin";
-    }
 }

@@ -1,4 +1,4 @@
-package me.hyunggeun.springbootdeveloper.common;
+package me.hyunggeun.springbootdeveloper.config;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;

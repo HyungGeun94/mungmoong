@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import me.hyunggeun.springbootdeveloper.common.BaseTimeEntity;
+import me.hyunggeun.springbootdeveloper.common.entity.BaseTimeEntity;
 import me.hyunggeun.springbootdeveloper.likedislike.entity.LikeDislike;
 import me.hyunggeun.springbootdeveloper.user.entity.User;
 

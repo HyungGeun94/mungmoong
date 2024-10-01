@@ -3,7 +3,7 @@ package me.hyunggeun.springbootdeveloper.comment.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import me.hyunggeun.springbootdeveloper.article.entity.Article;
-import me.hyunggeun.springbootdeveloper.common.BaseTimeEntity;
+import me.hyunggeun.springbootdeveloper.common.entity.BaseTimeEntity;
 import me.hyunggeun.springbootdeveloper.user.entity.User;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package me.hyunggeun.springbootdeveloper.common;
+package me.hyunggeun.springbootdeveloper.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

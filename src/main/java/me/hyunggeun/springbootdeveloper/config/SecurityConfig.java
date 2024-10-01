@@ -1,4 +1,4 @@
-package me.hyunggeun.springbootdeveloper;
+package me.hyunggeun.springbootdeveloper.config;
 
 
 import lombok.RequiredArgsConstructor;
