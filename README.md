@@ -53,4 +53,33 @@ baseTimeentity 사용 .
 
 article,comment,likedislike...
 
+이중구조로 댓글 표현.
+```java
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
 
+    @OneToMany(mappedBy = "parent")
+    private List<Comment> replies = new ArrayList<>();
+
+
+```
+
+querydsl을 활용한 페이징 처리. 
+
+```java
+ QueryResults<Article> results = queryFactory
+                .selectFrom(article)
+                .where(predicate)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(article.id.desc())
+                .fetchResults();
+```
+
+조회 성능 향상을 위한 redis 캐싱 활용
+```java
+ @Cacheable(cacheNames = "getBoards", 
+        key = "'boards:page:' + #pageable.pageNumber + ':size:' + #pageable.pageSize", 
+        cacheManager = "boardCacheManager")
+```

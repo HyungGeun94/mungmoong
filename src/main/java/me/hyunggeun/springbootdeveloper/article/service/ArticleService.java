@@ -68,8 +68,6 @@ public class ArticleService {
         // Page 객체를 PageDTO로 변환하여 반환
         return new PageDTO<>(
                 articlePage.getContent(),
-                articlePage.getNumber(),
-                articlePage.getSize(),
                 articlePage.getTotalElements()
         );
     }
@@ -82,6 +80,7 @@ public class ArticleService {
     }
 
 
+    @Transactional
     public void delete(Long id) {
         articleRepository.deleteById(id);
     }

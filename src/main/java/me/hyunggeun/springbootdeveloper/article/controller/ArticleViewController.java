@@ -33,20 +33,15 @@ public class ArticleViewController {
 
     private final CommentService commentService;
 
-    private final ArticleRepository articleRepository;
-
     private final LikeDislikeService likeDislikeService;
 
 
     // 모든 글 목록을 표시하는 핸들러
     @GetMapping({"/articles","/"})
     public String articles(@RequestParam(required = false) String keyword,
-                           Model model,
-                           @PageableDefault(page=0,size=5)Pageable pageable) {
-        // keyword가 전달되면 그에 맞게 검색, 아니면 전체 조회
-//        Page<ArticleResponse> articles = blogService.findByKeyword(keyword, pageable).stream()
-//                .map(a -> new ArticleResponse(a.getId(), a.getTitle(), a.getContent(), a.getCreatedAt()))
-//                .toList();
+                           @PageableDefault(page=0,size=5)Pageable pageable,
+                           Model model) {
+
 
         PageDTO<ArticleResponse> pageDTO = articleService.findByKeyword(keyword, pageable);
 
