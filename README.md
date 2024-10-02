@@ -4,7 +4,12 @@
 
 언어 : 자바, 스프링 부트  
 
-의존성 : websocket(stomp),JPA,querydsl,springdata,mail,
+의존성 :JPA,querydsl,springdata,mail
+
+
+websocket(stomp) - 진행중
+
+
 
 데이터베이스 : mysql 
 
@@ -21,8 +26,17 @@
 1. aws ec2 사용
 2. redis,rds,아마존 도커허브,s3,
 
+백엔드 배포 flow
 
+[//]: # (Route53&#40;domain 별칭&#41; -> ELB&#40;SSL,TLS-https,80port,443port&#41; ->EC2&#40;80 port&#41; -> EIP -> S3 -> JDK install -> git clone -> build -> RDS)
+
+![img.png](img.png)
  
+
+
+
+
+
 
 
 - 뷰 (html,css,js)

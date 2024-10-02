@@ -37,6 +37,10 @@ public class ArticleViewController {
 
 
     // 모든 글 목록을 표시하는 핸들러
+    /**
+     *  Service의 caching과정에서 Page<T>를 직렬화 하려면 너무 많은 정보들이 들어 있어서 직렬화 과정에 오류 발생
+     *  PageDTO를 반환하게 한다음에 컨트롤러에서 Page<T>로 재조립하는 방법택함.
+     */
     @GetMapping({"/articles","/"})
     public String articles(@RequestParam(required = false) String keyword,
                            @PageableDefault(page=0,size=5)Pageable pageable,
